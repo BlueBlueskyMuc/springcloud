@@ -1,0 +1,52 @@
+server:
+  port: 8001
+
+
+mybatis:
+  config-location: classpath:mybatis/mybatis.cfg.xml          # mybatis配置文件所在路径
+  type-aliases-package: com.muc.springcloud.entities          # 所有Entity别名类所在包
+  mapper-locations:
+  - classpath:mybatis/mapper/**/*.xml                          # mapper映射文件
+
+
+spring:
+  application:
+    name: microservicecloud-dept
+  datasource:
+    username: root
+    password: huiya123
+    url: jdbc:mysql://localhost:3306/cloudDB01        # 数据库名称
+    type: com.alibaba.druid.pool.DruidDataSource      # 当前数据源操作类型
+    driver-class-name: com.mysql.jdbc.Driver         # mysql驱动包
+    dbcp2:
+      min-idle: 5                                           # 数据库连接池的最小维持连接数
+      initial-size: 5                                       # 初始化连接数
+      max-total: 5                                          # 最大连接数
+      max-wait-millis: 200                                  # 等待连接获取的最大超时时间
+
+#客户端注册进eureka服务列表内
+eureka:
+  client:
+    service-url:
+#      defaultZone: http://localhost:7001/eureka
+      defaultZone: http://eureka7001.com:7001/eureka/,http://eureka7002.com:7002/eureka/,http://eureka7003.com:7003/eureka/
+  instance:
+    instance-id: micoservicecloud-dept8001 #自定义服务名称信息
+    prefer-ip-address: true #访问路径可以显示IP地址
+
+
+# 点击服务报告显示信息
+info:
+  app.name: muc-microservicecloud
+  company.name: www.muc.com
+  build.artifactId: microservicecloud-provider-dept-8001
+  build.version: 1.0-SNAPSHOT
+
+#springboot2.0. 的配置项为：
+#actuator端口
+management:
+  endpoints:
+    web:
+      #   base-path: / #修改访问路径  2.0之前默认是/   2.0默认是 /actuator  可以通过这个属性值修改
+      exposure:
+        include: '*'  #开放所有页面节点  默认只开启了health、info两个节点
